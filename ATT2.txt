@@ -1,0 +1,104 @@
+1) Main differences between SQL and NoSQL databases
+
+SQL and NoSQL databases differ mainly in structure, scalability, and data handling.
+
+SQL databases store data in structured tables with rows and columns and require a predefined schema. They support complex queries using SQL and maintain strong consistency using ACID properties. Examples include MySQL, PostgreSQL, and Oracle.
+
+NoSQL databases use flexible schemas and can store structured, semi-structured, or unstructured data. Instead of tables, they may use key-value pairs, documents, columns, or graphs. Examples include MongoDB, Cassandra, and Redis.
+
+Another difference is scalability. SQL databases usually scale vertically by increasing server power, while NoSQL databases scale horizontally by adding more servers to a cluster.
+
+SQL databases are best for structured data and complex relationships, while NoSQL databases are better for large-scale distributed systems and rapidly changing data.
+
+2) Main components of the Hadoop environment
+
+The Hadoop environment includes several key components that work together to store and process large datasets.
+
+HDFS (Hadoop Distributed File System)
+HDFS is the storage layer of Hadoop. It stores large files across multiple machines and splits them into blocks.
+
+NameNode
+The NameNode is the master node that manages the filesystem metadata. It keeps track of file locations and which DataNodes store each block.
+
+DataNodes
+DataNodes are worker nodes that store the actual data blocks and perform read/write operations.
+
+MapReduce
+MapReduce is the processing framework used to analyze large datasets in parallel across cluster nodes.
+
+YARN (Yet Another Resource Negotiator)
+YARN manages system resources and schedules tasks across the cluster.
+
+Together, these components allow Hadoop to store, manage, and process Big Data efficiently.
+
+3) How NameNode manages DataNode crashes
+
+The NameNode monitors the health of DataNodes using heartbeat messages. Each DataNode regularly sends a heartbeat signal to the NameNode to indicate that it is functioning properly.
+
+If the NameNode does not receive a heartbeat from a DataNode within a certain period, it assumes that the node has crashed or become unavailable.
+
+When this happens, the NameNode marks the DataNode as failed and stops sending requests to it. The system then checks whether the data blocks stored on that node still have enough replicas.
+
+If replicas are missing, the NameNode instructs other DataNodes to create new replicas of those blocks from the remaining copies stored elsewhere in the cluster.
+
+This replication process ensures that the system maintains the required number of data copies and prevents data loss. As a result, Hadoop continues operating even when hardware failures occur.
+
+
+4)a)  hdfs dfs -put temperature.csv /temp
+b) #mapper.py
+#!/usr/bin/env python3
+import sys
+
+for line in sys.stdin:
+    line = line.strip()
+
+    parts = line.split(",")
+
+    if len(parts) != 6:
+        continue
+
+    country, city, month, day, year, temp = parts
+
+    try:
+        temp = float(temp)
+        print(f"{city}\t{temp}")
+    except:
+        pass
+#reduce.py
+#!/usr/bin/env python3
+import sys
+
+current_city = None
+temps = []
+
+for line in sys.stdin:
+    city, temp = line.strip().split("\t")
+    temp = float(temp)
+
+    if city == current_city:
+        temps.append(temp)
+    else:
+        if current_city is not None:
+            min_t = min(temps)
+            max_t = max(temps)
+            avg_t = sum(temps) / len(temps)
+            print(f"{current_city} {min_t} {max_t} {avg_t:.2f}")
+
+        current_city = city
+        temps = [temp]
+
+if current_city is not None:
+    min_t = min(temps)
+    max_t = max(temps)
+    avg_t = sum(temps) / len(temps)
+    print(f"{current_city} {min_t} {max_t} {avg_t:.2f}")
+
+
+
+c)Execute MapReduce using Hadoop Streaming
+hdfs dfs jar hadoop-jar-3.3.5.jar -input /temp -output /out -mapper mapper.py
+cat temperature.csv | python3 mapper.py | sort | python3 reducer.py
+
+d) Get the result from HDFS using hdfs-cli
+
+hdfs dfs -get /temp .

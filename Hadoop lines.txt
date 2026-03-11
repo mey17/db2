@@ -1,0 +1,19 @@
+hdfs dfs -put AMZN.csv /amazon
+
+hadoop jar hadoop-streaming-3.3.5.jar -input /amazon -output /output/file1 -mapper mapper.py  -reducer reducer_min.py
+
+hdfs dfs -getmerge /output/file1 final_output.txt
+
+Gorcnakan MapReduce task (55%) Write the code (mapper.py and reducer.py) and run it in a local environment not in a Hadoop environment
+1. Find the maximum temperature recorded in each city
+2. The output should be grouped by city, it should have the city, the date, the maximum temperature
+
+to execute:
+cat temperature.csv | python mapper.py | sort | python reducer.py > output.txt
+#use "py" or "python3" if "python" doesn't work 
+
+write down the hadoop lines
+
+hdfs dfs -put yourfile.csv /filename
+hadoop jar hadoop-streaming-3.3.5.jar -input /filename -output /output/file1 -mapper mapper.py  -reducer reducer.py
+hdfs dfs -getmerge /output/file1 final_output.txt

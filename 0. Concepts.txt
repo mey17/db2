@@ -1,0 +1,62 @@
+A data repository stores and manages data for long-term preservation and access.
+
+structured, semi-structured, and unstructured data.
+
+DATABASE MANAGEMENT SYSTEMS (DBMS) is software for storing and retrieving users' data while considering security measures. 
+(group of programs that manipulate the database)
+Accepts request from an application and instructs the OS to provide the data.
+• MySQL
+• Microsoft Access
+• Oracle
+• PostgreSQL
+
+Relational - in rows and columns - 
+• MySQL
+• Oracle
+• Microsoft SQL Server database
+
+Hierarchical - tree-like structure (top-down or bottom-up).
+Parent-child relationship:
+• 1 parent - many children
+• 1 child - 1 parent
+
+Network - more complex relationships,many-to-many
+• 1 child - multiple parents 
+
+Object-oriented - data stored in the form of objects.
+
+Cloud-based DB - running on a cloud computing platform.
+
+• Amazon Relational Database Service
+• Microsoft Azure SQL database
+• IBM DB2
+• MongoDB Atlas
+
+CRUD - create, read, update, delete
+Query is a request to access data from a DB to manipulate or retrieve it.
+
+
+NoSQL database is a non-relational Data Management System, no fixed schema. No joins, easy to scale.
+Distributed data stores with humongous data storage needs.
+• Key-value pair
+• Column-oriented graph
+• Graphs based
+• Document-oriented
+
+
+NoSQL databases can be categorized based on their underlying data model:
+
+Key-Value Stores (like a dictionary).
+    Use Case: Session management, caching, or user profiles.
+
+Column-Oriented Databases (columns rather than rows, optimized for analytical queries)
+    Use Case: Real-time analytics, big data processing.
+
+Graph Databases (nodes and edges, representing relationships)
+    Use Case: Social networks, recommendation engines, or fraud detection.
+
+Document-Oriented Databases (documents JSON, BSON)
+    Use Case: Content management systems, catalogs, or product information storage.
+
+Data Warehousing (DW) - large centralized repository (from one or more data sources), supports analytics and reporting.
+Merges information coming from different sources into one comprehensive database.

@@ -1,0 +1,362 @@
+Distributed Computing
+
+Distributed computing is a computing model where many computers work together to solve a problem or process large amounts of data.
+
+Instead of one powerful computer doing all the work, multiple machines share the workload.
+
+These machines are called nodes.
+
+A node can be:
+
+a physical computer (server)
+
+a virtual machine in the cloud
+
+All nodes communicate through a network and coordinate their work.
+
+Example:
+
+Imagine a large dataset of 10 terabytes that must be analyzed.
+
+Single computer
+→ may take many hours or days.
+
+Distributed system with 100 nodes
+→ each node processes a small part of the data simultaneously, reducing the processing time significantly.
+
+Cluster
+
+When many nodes work together and appear as one single system to the user, it is called a cluster.
+
+In a cluster:
+
+multiple computers cooperate
+
+tasks are distributed among them
+
+the system behaves like one powerful machine
+
+Example:
+
+A web service like Netflix may run on thousands of servers that form clusters to serve millions of users.
+
+Apache Hadoop
+
+Apache Hadoop is an open-source framework developed by the Apache Software Foundation.
+
+It is written mainly in Java and is designed to process very large datasets using distributed computing.
+
+Hadoop allows data to be:
+
+stored across many machines
+
+processed in parallel
+
+Instead of moving huge datasets to a single computer, Hadoop moves the processing tasks to where the data is stored.
+
+This makes the system faster and more efficient.
+
+Example:
+
+A company analyzing billions of website logs can use Hadoop to process the data across hundreds of servers simultaneously.
+
+Hadoop Benefits
+
+Hadoop provides many advantages for Big Data processing.
+
+1. High Scalability
+
+Scalability means the system can grow easily.
+
+If more data needs to be processed, administrators can simply add more nodes to the cluster.
+
+Example:
+
+If a system starts with 10 servers and the data grows, it can expand to 100 servers.
+
+2. Fault Tolerance
+
+Hardware failures are common in large systems.
+
+Hadoop handles failures using data replication.
+
+Replication means storing multiple copies of data on different nodes.
+
+Example:
+
+If a disk fails on one server, another copy of the data is still available on another server.
+
+3. Data Locality
+
+Hadoop processes data where it is stored instead of transferring large datasets across the network.
+
+This reduces network traffic and improves performance.
+
+Example:
+
+If a file is stored on Node A, Hadoop will try to run the processing task on Node A instead of sending the file to Node B.
+
+4. High Availability
+
+High availability means the system continues operating even if some components fail.
+
+Through replication and failover mechanisms, Hadoop ensures that:
+
+services remain accessible
+
+data remains available
+
+5. Processing Speed
+
+Hadoop distributes tasks across many nodes, allowing parallel processing.
+
+Example:
+
+If a dataset is divided into 100 parts, 100 nodes can process them at the same time.
+
+This dramatically reduces processing time.
+
+6. Cost Effectiveness
+
+Hadoop is designed to run on commodity hardware.
+
+Commodity hardware means:
+
+inexpensive standard computers
+
+not specialized high-end servers
+
+This makes Hadoop much cheaper than traditional supercomputing solutions.
+
+7. Easy to Learn
+
+Because Hadoop is open source, many learning resources exist:
+
+documentation
+
+tutorials
+
+community forums
+
+open-source tools
+
+This makes it accessible to developers and researchers.
+
+8. SQL-like Querying
+
+Although Hadoop handles large distributed datasets, users can still query data using SQL-like languages.
+
+Examples:
+
+HiveQL (Apache Hive)
+
+Spark SQL
+
+This allows people familiar with traditional databases to work with Big Data systems.
+
+HDFS (Hadoop Distributed File System)
+
+HDFS is the storage system used by Hadoop.
+
+It is designed specifically for storing very large files across multiple machines.
+
+Instead of storing a file in one place, HDFS:
+
+splits the file into blocks
+
+distributes the blocks across different nodes
+
+stores multiple copies of each block
+
+This approach improves both performance and reliability.
+
+Example:
+
+A 1 GB file might be split into blocks of 128 MB and stored on different servers.
+
+Key Characteristics of HDFS
+1. Scalable Storage
+
+HDFS can store petabytes of data across many machines.
+
+If storage is insufficient, more nodes can simply be added.
+
+2. Parallel Data Access
+
+Since data blocks are distributed across many nodes, multiple processes can access them simultaneously.
+
+This enables parallel computation, improving processing speed.
+
+Major Components of HDFS
+
+HDFS has three main components.
+
+NameNode (Master)
+
+The NameNode is the main controller of the HDFS system.
+
+It manages the metadata of the file system.
+
+Metadata includes:
+
+file names
+
+directory structure
+
+number of blocks
+
+location of each block
+
+which DataNode stores each block
+
+The NameNode does not store actual data.
+
+Instead, it keeps track of where the data is located.
+
+Example:
+
+If a client requests a file, the NameNode tells the client which DataNodes contain the blocks of that file.
+
+Secondary NameNode
+
+The Secondary NameNode is a supporting node.
+
+Its role is to help maintain the system’s metadata and improve reliability.
+
+It periodically:
+
+copies metadata
+
+merges log files with the main filesystem structure
+
+This helps protect the system from failure if the NameNode crashes.
+
+However, it is not an exact backup, but rather a checkpointing mechanism.
+
+DataNode (Slave)
+
+The DataNode stores the actual data blocks.
+
+Each DataNode:
+
+stores file blocks
+
+performs read and write operations
+
+creates replicas of blocks
+
+deletes or replicates blocks according to instructions from the NameNode
+
+Example:
+
+If a file is split into 10 blocks, these blocks may be stored on several DataNodes.
+
+Data Replication
+
+To protect against hardware failure, HDFS stores multiple copies of each block.
+
+By default:
+
+Each block has 3 replicas.
+
+Example:
+
+Block 1 → stored on Node A
+Block 1 → replicated on Node B
+Block 1 → replicated on Node C
+
+If Node A fails, the system still has copies on Node B and C.
+
+Erasure Coding
+
+Erasure coding is another method for protecting data.
+
+Instead of storing full copies of data blocks, the system:
+
+splits data into fragments
+
+encodes the fragments
+
+distributes them across nodes
+
+Advantages:
+
+requires less storage space than full replication
+
+still allows data recovery if some fragments are lost
+
+Data Blocks in HDFS
+
+HDFS splits files into blocks before storing them.
+
+Typical block size:
+
+128 MB or 256 MB.
+
+Example:
+
+A 1 GB file would be divided into several blocks and distributed across multiple DataNodes.
+
+This allows the file to be processed in parallel.
+
+Heartbeat Mechanism
+
+Each DataNode regularly sends heartbeat messages to the NameNode.
+
+A heartbeat tells the NameNode:
+
+"I am alive and working."
+
+If the NameNode does not receive heartbeats from a DataNode:
+
+it assumes the node has failed
+
+it stops sending requests to that node
+
+it creates new replicas of the data stored on that node
+
+This ensures system reliability.
+
+WORM (Write Once Read Many)
+
+HDFS follows the WORM principle.
+
+This means:
+
+Once a file is written to the system, it cannot be modified.
+
+The file becomes read-only.
+
+Users can:
+
+read the file many times
+
+analyze the data
+
+copy it
+
+But they cannot modify the original file.
+
+Example:
+
+Log files written to HDFS can be analyzed many times but cannot be edited.
+
+Only users with special permissions can delete or modify such files.
+
+Summary
+
+Distributed computing allows multiple machines to work together to process large datasets efficiently.
+
+Apache Hadoop is a powerful open-source framework that uses distributed computing to store and process Big Data.
+
+Its main storage system, HDFS, divides files into blocks and distributes them across many nodes, ensuring:
+
+scalability
+
+fault tolerance
+
+high availability
+
+parallel processing
+
+Through mechanisms such as replication, heartbeat monitoring, and distributed storage, Hadoop systems can process massive datasets reliably and efficiently.

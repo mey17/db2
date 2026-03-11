@@ -1,0 +1,541 @@
+
+---
+
+# Databases, SQL, NoSQL and CAP Theorem
+
+## What is a Database?
+
+A **database** is an organized collection of data that is stored electronically and managed by a computer system.
+
+Instead of keeping information in separate files or documents, databases store everything in a structured way so that the data can be **easily accessed, updated, and managed**.
+
+For example:
+
+Imagine a **school system**.
+
+Instead of storing student information in many Excel files, a database can store:
+
+Student_ID | Name | Age | Class
+101 | Anna | 16 | 10A
+102 | David | 17 | 11B
+103 | Maria | 15 | 9C
+
+Teachers and administrators can quickly search, update, or analyze this information.
+
+Databases are used everywhere:
+
+* banking systems
+* social media platforms
+* e-commerce websites
+* hospital systems
+* government records
+
+A special software called a **Database Management System (DBMS)** manages the database.
+
+Examples of DBMS:
+
+* MySQL
+* PostgreSQL
+* Oracle
+* MongoDB
+
+---
+
+# Advantages of Databases
+
+## 1. Reduced Data Redundancy
+
+Data redundancy means **duplicated data stored in many places**.
+
+Without a database:
+
+Student name might appear in multiple files:
+
+* class list
+* exam list
+* attendance list
+
+If the name changes, you must update it everywhere.
+
+A database stores the information **once** and all systems use that same record.
+
+Example:
+
+Student table
+Student_ID | Name | Email
+
+Other tables reference it instead of duplicating the information.
+
+This reduces storage space and avoids errors.
+
+---
+
+## 2. Reduced Updating Errors and Increased Consistency
+
+When information is stored in one place, it is easier to keep it **consistent**.
+
+Example:
+
+If a customer's phone number changes:
+
+Without database
+You must update it in many files.
+
+With database
+You update it once and all applications use the new data.
+
+This reduces mistakes and ensures everyone sees the **same information**.
+
+---
+
+## 3. Greater Data Integrity and Independence
+
+**Data integrity** means the data remains accurate and valid.
+
+Databases enforce rules such as:
+
+* required fields
+* valid data types
+* relationships between tables
+
+Example:
+
+If a table requires a valid student ID, the database will reject invalid entries.
+
+**Data independence** means that applications and databases are separated.
+
+Example:
+
+A mobile app and a website can both use the same database without changing the database structure.
+
+---
+
+## 4. Improved Data Access
+
+Databases allow users to quickly find data using **query languages** such as SQL.
+
+Example query:
+
+SELECT name FROM students WHERE age > 16;
+
+This retrieves all students older than 16.
+
+Even if the database contains millions of records, queries can return results quickly.
+
+---
+
+## 5. Enhanced Data Security
+
+Databases include strong security features such as:
+
+* user authentication
+* role-based permissions
+* encryption
+* logging
+
+Example:
+
+A hospital database may allow:
+
+Doctor → access patient records
+Receptionist → view patient names only
+Administrator → manage the system
+
+This protects sensitive data.
+
+---
+
+## 6. Cost Efficiency
+
+Although databases require initial setup, they reduce long-term costs by:
+
+* automating data management
+* reducing manual data entry
+* preventing data errors
+* improving efficiency
+
+For large organizations, databases save significant time and money.
+
+---
+
+# Disadvantages of Databases
+
+## 1. Complexity
+
+Database systems can be complex to design and maintain.
+
+Professionals such as **database administrators (DBAs)** are often required to:
+
+* design database structure
+* manage performance
+* handle backups
+* ensure security
+
+---
+
+## 2. Cost
+
+Large database systems can be expensive.
+
+Costs may include:
+
+* hardware
+* software licenses
+* maintenance
+* skilled personnel
+
+Some enterprise databases like **Oracle** can be very costly.
+
+However, open-source databases like **PostgreSQL** or **MySQL** reduce this problem.
+
+---
+
+## 3. Security Risks
+
+Since databases store large amounts of valuable data, they become attractive targets for cyberattacks.
+
+Examples of attacks:
+
+* SQL injection
+* unauthorized access
+* data leaks
+
+Therefore strong security practices must be implemented.
+
+---
+
+## 4. Compatibility Issues
+
+Sometimes databases must interact with **legacy systems** or older applications.
+
+These systems may not support modern database technologies, requiring:
+
+* additional software
+* custom integration
+* middleware
+
+This can complicate system architecture.
+
+---
+
+# SQL (Structured Query Language)
+
+SQL is the **standard language used to communicate with relational databases**.
+
+It allows users to:
+
+* retrieve data
+* insert new records
+* update existing data
+* delete records
+
+SQL works mainly with **tables consisting of rows and columns**.
+
+Example table:
+
+Users
+
+ID | Name | Email
+1 | John | [john@mail.com](mailto:john@mail.com)
+2 | Sarah | [sarah@mail.com](mailto:sarah@mail.com)
+
+---
+
+## Basic SQL Operations
+
+Insert data
+
+INSERT INTO users (name, email)
+VALUES ('Anna', '[anna@mail.com](mailto:anna@mail.com)');
+
+Retrieve data
+
+SELECT * FROM users;
+
+Update data
+
+UPDATE users
+SET email = '[new@mail.com](mailto:new@mail.com)'
+WHERE id = 1;
+
+Delete data
+
+DELETE FROM users WHERE id = 1;
+
+---
+
+## SQL Schema
+
+SQL databases require a **predefined schema**.
+
+A schema defines:
+
+* tables
+* columns
+* data types
+* relationships
+
+Example schema:
+
+Students table
+
+Student_ID INT
+Name VARCHAR(50)
+Age INT
+
+Once defined, the structure must be followed.
+
+---
+
+## SQL for Complex Queries
+
+SQL is powerful for complex data analysis.
+
+Example:
+
+Join multiple tables.
+
+SELECT students.name, courses.course_name
+FROM students
+JOIN enrollments ON students.id = enrollments.student_id
+JOIN courses ON courses.id = enrollments.course_id;
+
+This combines information from several tables.
+
+---
+
+## SQL Consistency (ACID)
+
+SQL databases follow **ACID properties**.
+
+Atomicity
+Transactions happen completely or not at all.
+
+Consistency
+Data always remains valid.
+
+Isolation
+Multiple transactions do not interfere.
+
+Durability
+Once committed, data remains stored even after system failure.
+
+Example:
+
+In banking:
+
+Transferring money from Account A to B must complete fully or not at all.
+
+---
+
+# NoSQL Databases
+
+NoSQL stands for **Not Only SQL**.
+
+These databases are designed for:
+
+* large datasets
+* distributed systems
+* flexible data structures
+
+They are widely used by large internet companies such as:
+
+* Twitter
+* Facebook
+* Google
+
+---
+
+## Flexible Schema
+
+Unlike SQL databases, NoSQL databases usually have **dynamic schemas**.
+
+Example document in MongoDB:
+
+{
+"name": "Anna",
+"age": 21,
+"hobbies": ["music", "sports"]
+}
+
+Another document might contain different fields.
+
+This flexibility is useful for rapidly changing applications.
+
+---
+
+## Simple and Fast Queries
+
+NoSQL databases prioritize **speed and scalability** rather than complex joins.
+
+They are optimized for:
+
+* fast read/write operations
+* large distributed systems
+
+Example:
+
+A social media platform storing millions of posts per minute.
+
+---
+
+## Hierarchical Data Storage
+
+NoSQL works well with nested or hierarchical data.
+
+Example JSON structure:
+
+User
+posts
+comments
+replies
+
+This structure is harder to implement efficiently in relational databases.
+
+---
+
+## Types of NoSQL Databases
+
+### Key-Value Databases
+
+Simple structure:
+
+key → value
+
+Example:
+
+user123 → {name:"Anna", age:20}
+
+Example technologies:
+
+Redis
+DynamoDB
+
+---
+
+### Document Databases
+
+Store data in JSON-like documents.
+
+Example technologies:
+
+MongoDB
+CouchDB
+
+---
+
+### Column-Oriented Databases
+
+Store data by columns instead of rows.
+
+Used for big data analytics.
+
+Example:
+
+Apache Cassandra
+HBase
+
+---
+
+### Graph Databases
+
+Store relationships between data points.
+
+Example:
+
+social networks
+
+Person → friend → person
+
+Example technologies:
+
+Neo4j
+
+---
+
+# CAP Theorem
+
+The **CAP Theorem** describes limitations in distributed systems.
+
+It states that a distributed database system can guarantee only **two out of three properties** at the same time.
+
+These properties are:
+
+Consistency
+Availability
+Partition Tolerance
+
+---
+
+## Consistency
+
+All users see the **same data at the same time**.
+
+Example:
+
+If you update your profile name, everyone immediately sees the new name.
+
+---
+
+## Availability
+
+The system always responds to requests.
+
+Even if some servers fail, users still receive a response.
+
+However, the response might contain outdated data.
+
+Example:
+
+A social media feed might show slightly old posts but still works.
+
+---
+
+## Partition Tolerance
+
+The system continues working even when **network failures separate servers**.
+
+Example:
+
+If two data centers lose connection with each other, the system still operates.
+
+---
+
+## Trade-offs in CAP
+
+When a network partition occurs, a system must choose:
+
+Consistency OR Availability.
+
+If it chooses **Availability**
+The system continues responding but may return outdated data.
+
+If it chooses **Consistency**
+The system may reject requests until the data is synchronized.
+
+---
+
+## Example
+
+Banking systems prioritize **Consistency**.
+
+Money transfers must always show the correct balance.
+
+Social media systems prioritize **Availability**.
+
+Users must always be able to access the platform even if some data is slightly outdated.
+
+---
+
+# Conclusion
+
+Databases are essential components of modern software systems.
+
+Traditional **SQL databases** are ideal for structured data, strong consistency, and complex queries.
+
+**NoSQL databases** provide flexibility, scalability, and high performance for large distributed systems.
+
+The **CAP theorem** helps engineers understand the trade-offs between consistency, availability, and fault tolerance when designing distributed databases.
+
+---
+

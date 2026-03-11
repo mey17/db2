@@ -1,0 +1,105 @@
+1) When would you use SQL and NoSQL databases?
+
+SQL databases are used when data is structured, relationships are important, and strong consistency is required. SQL databases use tables with predefined schemas and support complex queries and joins.
+
+Example:
+A banking system uses SQL databases such as MySQL or PostgreSQL. Bank accounts, transactions, and customers are stored in structured tables, and strict consistency is required so that balances are always correct. SQL is also useful for systems like inventory management or airline booking systems, where complex queries and data relationships are common.
+
+NoSQL databases are used when data is large-scale, unstructured or semi-structured, and needs high scalability and fast performance. They allow flexible schemas and distributed storage.
+
+Example:
+A social media platform like Twitter or Facebook generates huge amounts of posts, comments, and likes every second. This data has many different formats and grows quickly, so NoSQL databases such as MongoDB or Cassandra are used. They allow fast reads and writes and can easily scale across many servers.
+
+In summary, SQL is best for structured, consistent data, while NoSQL is best for large, flexible, distributed data systems.
+
+2) Main benefits of using Hadoop for storing, processing, and analyzing large datasets
+
+Hadoop provides several important benefits for working with large and complex datasets.
+
+Scalability
+Hadoop clusters can easily scale by adding more nodes. As data grows, new machines can be added without redesigning the system.
+
+Fault Tolerance
+Hadoop stores multiple copies of data using replication. If a node fails, the system can still access the data from another node.
+
+Distributed Processing
+Hadoop processes data in parallel across multiple machines using frameworks like MapReduce. This greatly increases processing speed.
+
+Cost Efficiency
+Hadoop can run on inexpensive commodity hardware instead of expensive specialized servers.
+
+Data Locality
+Hadoop processes data on the machine where it is stored, reducing network traffic and improving performance.
+
+These features make Hadoop very effective for Big Data storage, analysis, and large-scale data processing tasks.
+
+3) Functionality of DataNodes in Hadoop
+
+In Hadoop, DataNodes are the worker nodes responsible for storing the actual data in the Hadoop Distributed File System (HDFS).
+
+Each DataNode stores blocks of data that belong to files distributed across the cluster. Large files are divided into blocks and stored across multiple DataNodes to allow parallel processing.
+
+DataNodes perform several important tasks. They handle read and write requests from clients, allowing users or applications to access stored data. They also create and maintain replicas of data blocks according to instructions from the NameNode to ensure fault tolerance.
+
+DataNodes continuously send heartbeat signals to the NameNode to indicate that they are functioning correctly. If a DataNode fails and stops sending heartbeats, the NameNode detects the failure and creates new replicas of the lost blocks on other nodes.
+
+In summary, DataNodes are responsible for storing data blocks, managing replication, handling read/write operations, and maintaining communication with the NameNode.
+
+
+4) Calculate the average temperature and the temperature deviation (max-min) for each city using mapreduce. the output should be like like city average deviation . The format of the output maybe any text format . You should submit your code in .py format
+a) hdfs dfs -put temperature.csv /temp
+b) 
+#mapper.py
+#!/usr/bin/env python3
+import sys
+
+for line in sys.stdin:
+    line = line.strip()
+    parts = line.split(",")
+
+    if len(parts) != 6:
+        continue
+
+    country, city, month, day, year, temp = parts
+
+    try:
+        temp = float(temp)
+        print(f"{city}\t{temp}")
+    except:
+        pass
+
+#reducer.py
+#!/usr/bin/env python3
+import sys
+
+current_city = None
+temps = []
+
+for line in sys.stdin:
+    city, temp = line.strip().split("\t")
+    temp = float(temp)
+
+    if city == current_city:
+        temps.append(temp)
+    else:
+        if current_city is not None:
+            avg = sum(temps) / len(temps)
+            deviation = max(temps) - min(temps)
+            print(f"{current_city} {avg:.2f} {deviation:.2f}")
+
+        current_city = city
+        temps = [temp]
+
+# last city
+if current_city is not None:
+    avg = sum(temps) / len(temps)
+    deviation = max(temps) - min(temps)
+    print(f"{current_city} {avg:.2f} {deviation:.2f}")
+
+
+c)Execute MapReduce using Hadoop Streaming
+hdfs dfs jar hadoop-jar-3.3.5.jar -input /temp -output /out -mapper mapper.py
+cat temperature.csv | python3 mapper.py | sort | python3 reducer.py
+d) Get the result from HDFS using hdfs-cli
+
+hdfs dfs -get /temp .
